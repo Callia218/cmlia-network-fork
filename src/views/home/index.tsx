@@ -142,9 +142,17 @@ export function HomePage() {
     <div className={homePageClass}>
       <div className={homeToolbarClass}>
         <div className="flex min-w-0 items-center gap-2">
-          <h1 className="text-[0.875rem] leading-[1.4] font-[650] whitespace-nowrap">
-            {t("home.networkOverview")}
-          </h1>
+          <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-primary/12 text-primary">
+            <span className="size-2 rounded-full bg-primary shadow-[0_0_0_4px_color-mix(in_srgb,var(--primary)_18%,transparent)]" />
+          </span>
+          <div className="min-w-0">
+            <h1 className="text-[0.95rem] leading-[1.35] font-[700] tracking-[-0.01em] whitespace-nowrap">
+              {t("home.networkOverview")}
+            </h1>
+            <p className="truncate text-[0.68rem] font-medium tracking-[0.12em] text-subtle uppercase">
+              Live network signals
+            </p>
+          </div>
         </div>
         <div className={homeToolbarActionsClass}>
           <Button

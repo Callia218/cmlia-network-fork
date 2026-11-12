@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
+/* One IP visual system: midnight blue surfaces with a bright cyan signal color. */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -150,7 +152,7 @@
 
 /* Shared brand color for both light and dark appearance. */
 :root {
-  --primary: oklch(0.5645 0.163 253.27);
+  --primary: oklch(0.72 0.16 195);
   --primary-foreground: #fff;
   --ring: var(--primary);
   --sidebar-primary: var(--primary);
@@ -160,51 +162,60 @@
 
 /* Reference geometry: 1000px shell, system typography, compact tools. */
 :root {
-  --background: #fafafa;
-  --foreground: #1a1a1a;
-  --card: #fff;
-  --card-foreground: #1a1a1a;
-  --muted: #f8f9fb;
-  --muted-foreground: #57606a;
-  --border: #e1e4e8;
-  --input: #d8dce0;
-  --accent: #eef1f5;
-  --secondary: #eef1f5;
-  --subtle: #8b949e;
-  --success: #1b8a2d;
-  --success-soft: #d1fae5;
-  --success-text: #065f46;
-  --good: #6fcf7c;
-  --warning: #f0c040;
-  --danger: #cf222e;
-  --info-soft: #dbeafe;
-  --info-text: #1d4ed8;
-  --status-success: #047857;
-  --status-warning: #b45309;
-  --tool-shadow: 0 1px 4px rgb(0 0 0 / 6%), 0 4px 12px rgb(0 0 0 / 4%);
+  --background: #f3f7fb;
+  --foreground: #11243a;
+  --card: rgb(255 255 255 / 78%);
+  --card-foreground: #11243a;
+  --muted: #eaf2f7;
+  --muted-foreground: #547087;
+  --border: rgb(123 164 187 / 24%);
+  --input: #c5d8e4;
+  --accent: #dff3f5;
+  --secondary: #e5f0f5;
+  --subtle: #7590a2;
+  --success: #0f9f83;
+  --success-soft: #d5f5ec;
+  --success-text: #08725d;
+  --good: #63cdb0;
+  --warning: #e6a23c;
+  --danger: #d95e70;
+  --info-soft: #dff4fb;
+  --info-text: #087b9d;
+  --status-success: #0f9f83;
+  --status-warning: #b87816;
+  --tool-shadow: 0 16px 42px rgb(41 87 109 / 10%), 0 2px 7px rgb(30 66 88 / 6%);
 }
 .dark {
-  --background: #0d1117;
-  --foreground: #e6edf3;
-  --card: #161b22;
-  --card-foreground: #e6edf3;
-  --muted: #161b22;
-  --muted-foreground: #c9d1d9;
-  --border: #30363d;
-  --input: #444c56;
-  --accent: #21262d;
-  --secondary: #21262d;
-  --subtle: #8b949e;
-  --success-soft: #123e31;
-  --success-text: #a7f3d0;
-  --info-soft: #162d4e;
-  --info-text: #93c5fd;
-  --status-success: #6ee7b7;
-  --status-warning: #fcd34d;
-  --tool-shadow: 0 1px 4px rgb(0 0 0 / 40%), 0 4px 12px rgb(0 0 0 / 30%);
+  --background: #071522;
+  --foreground: #e6f3f6;
+  --card: rgb(13 34 52 / 82%);
+  --card-foreground: #e6f3f6;
+  --muted: #102b40;
+  --muted-foreground: #9bb8c8;
+  --border: rgb(108 181 197 / 22%);
+  --input: #315268;
+  --accent: #12394b;
+  --secondary: #123347;
+  --subtle: #7097a9;
+  --success-soft: #0b3d39;
+  --success-text: #8ce4cf;
+  --info-soft: #0d394b;
+  --info-text: #8bdcf0;
+  --status-success: #64dec3;
+  --status-warning: #f6c86b;
+  --tool-shadow: 0 18px 50px rgb(0 0 0 / 25%), 0 2px 8px rgb(0 0 0 / 22%);
 }
 body {
   line-height: 1.6;
+  background:
+    radial-gradient(
+      circle at 7% -12%,
+      rgb(67 187 201 / 15%),
+      transparent 30rem
+    ),
+    radial-gradient(circle at 92% 8%, rgb(83 131 218 / 12%), transparent 31rem),
+    var(--background);
+  background-attachment: fixed;
 }
 
 @layer base {
@@ -227,6 +238,22 @@ body {
 body {
   margin: 0;
   min-width: 320px;
+}
+.app-shell {
+  isolation: isolate;
+}
+.app-shell::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgb(89 145 170 / 5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(89 145 170 / 5%) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, #000, transparent 80%);
 }
 .app-shell {
   position: relative;

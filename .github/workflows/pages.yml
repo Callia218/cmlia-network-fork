@@ -5,10 +5,10 @@ name: Build and deploy one-ip
 # forks deploy their default branch (the open-source build) out of the box.
 on:
   pull_request:
-    branches: [main, advertising-launch]
+    branches: ['**']
     paths-ignore: ['**.md', 'docs/**', 'LICENSE']
   push:
-    branches: [main, advertising-launch]
+    branches: ['**']
     paths-ignore: ['**.md', 'docs/**', 'LICENSE']
   workflow_dispatch:
 
@@ -147,6 +147,6 @@ jobs:
           fi
           case "$CF_DEPLOY_TARGET" in
             workers) pnpm exec wrangler deploy --env="" ;;
-            pages) pnpm deploy:pages --branch main ;;
+            pages) pnpm deploy:pages --branch "$GITHUB_REF_NAME" ;;
             *) echo "::error::CF_DEPLOY_TARGET must be workers or pages."; exit 1 ;;
           esac

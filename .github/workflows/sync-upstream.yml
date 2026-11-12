@@ -32,8 +32,8 @@ jobs:
           metadata=$(gh api "repos/$REPO")
           parent=$(jq -r '.parent.full_name' <<< "$metadata")
           branch=$(jq -r '.default_branch' <<< "$metadata")
-          if [ "$parent" != 'zhihui-hu/one-ip' ]; then
-            echo 'Only direct forks of zhihui-hu/one-ip are synchronized.'
+          if [ "$parent" != 'Callia218/one-ip' ]; then
+            echo 'Only direct forks of Callia218/one-ip are synchronized.'
             exit 0
           fi
           before=$(gh api "repos/$REPO/commits/$branch" --jq '.sha')

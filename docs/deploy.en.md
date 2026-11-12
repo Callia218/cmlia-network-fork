@@ -4,25 +4,24 @@
 
 ## Deploy to Cloudflare
 
-1. [Fork this project](https://github.com/zhihui-hu/one-ip/fork) into your GitHub account.
-2. Open the [Cloudflare dashboard](https://dash.cloudflare.com/), go to **Workers & Pages**, create a Worker and choose to import a Git repository.
-3. Connect GitHub, select your `one-ip` fork and set the production branch to `main`.
-4. Set the build command to `pnpm build` and the deploy command to `pnpm deploy`. Use Node.js 24 and pnpm 10.32.1. Keep the default root directory.
-5. Deploy and open the assigned `workers.dev` address. Use the Worker settings to connect a custom domain.
+1. Click the **Deploy to Cloudflare** button in the README, or [fork this project](https://github.com/Callia218/one-ip/fork) into your GitHub account.
+2. For a direct deployment, authorize GitHub and select `Callia218/one-ip` in Cloudflare; for a fork deployment, select your own `one-ip` fork.
+3. In **Workers & Pages**, use the selected repository's default branch as the production branch. Set the build command to `pnpm build` and the deploy command to `pnpm deploy`. Use Node.js 24 and pnpm 10.32.1. Keep the default root directory.
+4. Deploy and open the assigned `workers.dev` address. Use the Worker settings to connect a custom domain.
 
-The project uses **Cloudflare Workers with Static Assets**. The `/api/*` routes need a Worker. Core features require no application environment variables or API keys. See “Verification” for Turnstile setup.
+The project uses **Cloudflare Workers with Static Assets**. The `/api/*` routes need a Worker. Core features require no application environment variables or API keys. The Deploy to Cloudflare button creates a separate Worker project from `Callia218/one-ip`; a fork deployment uses the Cloudflare account and repository you authorize and never writes to the upstream repository. See “Verification” for Turnstile setup.
 
 For map access from mainland China, configure `TIANDITU_TOKEN` under Worker → Settings → Variables and Secrets (or run `pnpm exec wrangler secret put TIANDITU_TOKEN`). Maps prefer Tianditu and fall back to OpenStreetMap when unavailable; without the token, OpenStreetMap remains the default.
 
 The default map requires no account or API key. OpenStreetMap's public tiles are subject to its [usage policy](https://operations.osmfoundation.org/policies/tiles/): keep attribution visible, load tiles on demand, respect browser caching, and do not offer offline downloads or bulk prefetching. Availability is not guaranteed. Tile requests send only this site's origin as the Referer, excluding page paths containing queried IPs. Failed maps can be retried independently while location text and coordinates remain available.
 
-Workers Builds builds and deploys when `main` receives a commit. The button above points to the original repository. To preserve the fork relationship and update workflow, follow the steps to import your fork.
+Workers Builds builds and deploys when the connected production branch receives a commit. The button above points to `Callia218/one-ip`. To preserve the fork relationship and update workflow, follow the steps to import your fork.
 
 ## Cloudflare Pages deployment
 
 Pages reuses the existing API through [Advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/). The build creates `dist-pages/_worker.js` and `_routes.json`; only API and protected backend paths invoke the function. Use `dist-pages` for a complete Pages deployment.
 
-For Git integration, create a Pages project with preset **None**, repository root as the root directory, build command `pnpm build:pages`, and output directory `dist-pages`. Set build variables `NODE_VERSION=24` and `PNPM_VERSION=10.32.1`. Set the Functions compatibility date to `2026-09-09` and add `nodejs_compat` for both production and preview. The root `wrangler.toml` is for Workers; Pages CLI configuration lives in `deploy/pages/wrangler.toml`.
+For Git integration, create a Pages project with preset **None**, repository root as the root directory, build command `pnpm build:pages`, and output directory `dist-pages`. Set build variables `NODE_VERSION=24` and `PNPM_VERSION=10.32.1`. Set the Functions compatibility date to `2026-09-09` and add `nodejs_compat` for both production and preview. The root `wrangler.toml` is for Workers; Pages CLI configuration lives in `deploy/pages/wrangler.toml`. For a fork deployment, create the Pages project in your account and change the `name` in `deploy/pages/wrangler.toml` to that project name.
 
 For direct deployment:
 
@@ -31,8 +30,8 @@ pnpm install --frozen-lockfile
 pnpm build:pages
 pnpm exec wrangler login
 # First deployment only; skip if the project already exists
-pnpm exec wrangler pages project create one-ip --production-branch main
-pnpm deploy:pages --branch main
+pnpm exec wrangler pages project create one-ip --production-branch YOUR_DEFAULT_BRANCH
+pnpm deploy:pages --branch YOUR_DEFAULT_BRANCH
 ```
 
 Change the project name in `deploy/pages/wrangler.toml`. Configure optional secrets separately for production and preview in Pages, or use `pnpm exec wrangler pages secret put NAME --cwd deploy/pages`. To upload an existing `.secrets.production.env`, run `node scripts/sync-worker-secrets.mjs production --pages`. After building, use `pnpm pages:dev` for local preview; its secrets file is `deploy/pages/.dev.vars`.
@@ -108,7 +107,7 @@ Choose Workers Builds or GitHub Actions to avoid duplicate deployments. Actions 
 | Secret   | `CLOUDFLARE_API_TOKEN`  | Workers/Pages deployment credentials for the target |
 | Secret   | `CLOUDFLARE_ACCOUNT_ID` | Target Cloudflare account ID                        |
 
-Push to the deploy branch (`main` by default) or run `Build and deploy one-ip` on it. Deployment starts after the build, tests and Docker smoke test pass; other branches only build and test. Documentation-only changes do not trigger a run. Deployment uses the `production` environment, so secrets can live in the repository or that environment. External PRs run tests without deployment credentials. These credentials are used by CI.
+Push to the deploy branch (`CF_DEPLOY_BRANCH`, or the repository default branch when unset) or run `Build and deploy one-ip` on it. Deployment starts after the build, tests and Docker smoke test pass; other branches only build and test. Documentation-only changes do not trigger a run. Deployment uses the `production` environment, so secrets can live in the repository or that environment. External PRs run tests without deployment credentials. These credentials are used by CI.
 
 For `pages`, first create the Pages project named in `deploy/pages/wrangler.toml`. When using Pages Git integration, leave Actions deployment disabled.
 
@@ -122,7 +121,7 @@ For scheduled updates, enable `Sync upstream`:
 2. Under Settings → Secrets and variables → Actions → **Variables**, add `AUTO_SYNC_UPSTREAM=true`.
 3. The workflow checks for updates at 04:23 UTC each day. You can run it from the Actions page.
 
-The workflow supports forks created from `zhihui-hu/one-ip` and requires no personal access token. It uses GitHub's `merge-upstream` API, stops on conflicts and preserves your commits. Use GitHub's Sync fork if you want to review updates.
+The workflow supports forks created from `Callia218/one-ip` and requires no personal access token. It uses GitHub's `merge-upstream` API, stops on conflicts and preserves your commits. Use GitHub's Sync fork if you want to review updates.
 
 - **Workers Builds:** connect your fork's production branch and check deployment records for synchronized commits in Cloudflare's build history.
 - **GitHub Actions deployment:** the sync workflow triggers deployment when it merges updates. Pushes made with `GITHUB_TOKEN` do not trigger ordinary `push` workflows.

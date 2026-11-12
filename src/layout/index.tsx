@@ -31,8 +31,8 @@ const navClass = cn(
   // Desktop: floating pill that gains a surface once the page scrolls.
   // The negative margin cancels the padding and 1px border, so the logo and
   // buttons line up with the page content while the pill keeps its inset.
-  "md:sticky md:top-2 md:z-40 md:mb-3 md:flex md:min-h-11 md:items-center md:justify-between md:gap-6 md:rounded-[999px] md:border md:border-transparent md:bg-transparent md:-mx-3 md:py-1 md:px-[11px] md:transition-[background-color,border-color,box-shadow] md:duration-200 md:ease-[ease]",
-  "md:data-[scrolled=true]:border-[color-mix(in_srgb,var(--border)_70%,transparent)] md:data-[scrolled=true]:bg-[color-mix(in_srgb,var(--card)_88%,transparent)] md:data-[scrolled=true]:[box-shadow:0_8px_24px_-10px_color-mix(in_srgb,var(--foreground)_20%,transparent),0_1px_3px_color-mix(in_srgb,var(--foreground)_6%,transparent)] md:data-[scrolled=true]:backdrop-blur-[16px] md:data-[scrolled=true]:backdrop-saturate-[1.4]",
+  "md:sticky md:top-3 md:z-40 md:mb-5 md:flex md:min-h-12 md:items-center md:justify-between md:gap-6 md:rounded-2xl md:border md:border-transparent md:bg-transparent md:-mx-3 md:py-1.5 md:px-[11px] md:transition-[background-color,border-color,box-shadow] md:duration-200 md:ease-[ease]",
+  "md:data-[scrolled=true]:border-[color-mix(in_srgb,var(--primary)_24%,var(--border))] md:data-[scrolled=true]:bg-[color-mix(in_srgb,var(--card)_88%,transparent)] md:data-[scrolled=true]:[box-shadow:0_16px_30px_-18px_color-mix(in_srgb,var(--primary)_60%,transparent),0_1px_3px_color-mix(in_srgb,var(--foreground)_8%,transparent)] md:data-[scrolled=true]:backdrop-blur-[18px] md:data-[scrolled=true]:backdrop-saturate-[1.4]",
 );
 
 /** Header icon buttons are uniform regardless of each button's own variant. */
@@ -63,17 +63,20 @@ export function AppLayout() {
     <>
       <div
         className={cn(
-          "mx-auto w-full max-w-[1000px] px-5 py-4 max-xs:px-3 max-xs:pt-2.5",
+          "app-shell mx-auto w-full max-w-[1120px] px-5 py-5 max-xs:px-3 max-xs:pt-2.5",
           containerCardClass,
         )}
       >
         <header className="mb-2 hidden items-center justify-between max-md:flex">
           <Link
             to="/"
-            className="flex items-center gap-2 text-sm font-semibold"
+            className="flex items-center gap-2.5 text-sm font-semibold tracking-tight"
             aria-label={t("navigation.siteTitle")}
           >
             <img src="/icon.svg" width="24" height="24" alt="" />
+            <span className="hidden sm:inline">
+              ONE<span className="text-primary">·</span>IP
+            </span>
           </Link>
           <div className={headerActionsClass}>
             {mobile && <IpSearch />}
@@ -100,6 +103,9 @@ export function AppLayout() {
               height="32"
               className="size-6"
             />
+            <span className="ml-2 hidden text-[0.8rem] font-semibold tracking-[0.18em] text-foreground/80 sm:inline">
+              ONE<span className="text-primary">·</span>IP
+            </span>
           </Link>
           <div className={cn(headerActionsClass, "md:gap-1.5")}>
             {!mobile && <IpSearch />}

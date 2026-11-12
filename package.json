@@ -19,7 +19,7 @@
     "pages:dev": "wrangler pages dev --cwd deploy/pages",
     "worker:dev": "node scripts/worker-dev.mjs",
     "worker:types": "wrangler types",
-    "test": "wrangler deploy --dry-run --env='' --outdir .worker-test && node --import ./tests/register-paths.mjs --test tests/*.test.mjs",
+    "test": "wrangler deploy --dry-run --outdir .worker-test && node --import ./tests/register-paths.mjs --test tests/*.test.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "format": "prettier --write .",
